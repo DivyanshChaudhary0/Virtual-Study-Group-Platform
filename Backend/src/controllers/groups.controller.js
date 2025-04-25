@@ -137,32 +137,10 @@ const deleteGroup = async (req, res) => {
   }
 };
 
-const createPost = async (req, res) => {
-  try {
-
-  } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
-  }
-};
-
-const getPosts = async (req, res) => {
-  try {
-    
-  } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
-  }
-};
-
 module.exports = {
   getAllGroups,
   createGroup,
   getGroupById,
   joinGroup,
   deleteGroup,
-  createPost,
-  getPosts,
 };

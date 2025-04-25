@@ -1,28 +1,26 @@
 
 const {Router} = require("express");
+const { getAllGroups, createGroup, getGroupById, joinGroup, deleteGroup } = require("../controllers/groups.controller");
+const { createPost, getPosts, deletePost, updatePost } = require("../controllers/post.controller");
 
 const router = Router();
 
-router.get("/groups", async(req,res) => {
-    try{
-        
-    }
-    catch(err){
-        res.status(500).json({
-            message: err.message
-        })
-    }
-});
+router.get("/", getAllGroups);
 
-router.post("/groups", );
+router.post("/", createGroup);
 
-router.get("/groups/:id", );
+router.get("/:id", getGroupById);
 
-router.post("/groups/:id/join", );
+router.delete("/:id", deleteGroup)
 
-router.post("/groups/:id/posts", );
+router.post("/:id/join", joinGroup);
 
-router.get("/groups/:id/posts", )
+router.post("/:id/posts", createPost);
 
+router.get("/:id/posts", getPosts);
+
+router.put("/posts/:postId", updatePost)
+
+router.delete("/posts/:postId", deletePost);
 
 module.exports = router;
