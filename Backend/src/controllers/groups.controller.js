@@ -113,6 +113,7 @@ const joinGroup = async (req, res) => {
   }
 };
 
+
 const deleteGroup = async (req, res) => {
   try {
     const id = req.params.id;
@@ -136,6 +137,7 @@ const deleteGroup = async (req, res) => {
     });
   }
 };
+
 
 module.exports = {
   getAllGroups,
