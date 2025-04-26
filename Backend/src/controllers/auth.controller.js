@@ -81,7 +81,31 @@ const login = async function(req,res){
     }
 }
 
+const logout = async function(req,res){
+    try{
+        
+    }
+    catch(err){
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}
+
+const profile = async function(req,res){
+    try{
+
+    }
+    catch(err){
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}   
+
 module.exports = {
     register,
-    login
+    login,
+    profile,
+    logout
 }
