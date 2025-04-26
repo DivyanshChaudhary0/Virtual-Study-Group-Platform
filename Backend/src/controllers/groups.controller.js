@@ -87,6 +87,21 @@ const joinGroup = async (req, res) => {
         return res.status(400).json({ success: false, message: 'Invalid group ID format' });
     }
 
+    const isGroupExist = await groupModel.findById(groupId);
+    if(!isGroupExist){
+      return res.status(404).json({
+        message: "Group not found"
+      })
+    }
+
+    const userAlreadyExist = isGroupExist.members.find( (name) => name === user.name);
+
+    if(userAlreadyExist){
+      return res.status(400).json({
+        message: "You are already joined the group"
+      })
+    }
+
     const updatedGroup = await groupModel.findByIdAndUpdate(
       groupId,
       { $push: { members: user.name.trim() } },
