@@ -32,9 +32,10 @@ const getPosts = async (req, res) => {
 const createPost = async (req, res) => {
   try {
     const groupId = req.params.id;
+    const user = req.user;
 
-    const {text, authorName} = req.body;
-    if(!text || !authorName){
+    const { text } = req.body;
+    if(!text){
         return res.status(400).json({
             message: "text or aurhor not found"
         })
@@ -53,7 +54,7 @@ const createPost = async (req, res) => {
 
     const post = await postModel.create({
         text,
-        authorName,
+        authorName: user.name,
         group: groupId
     })
 
@@ -74,6 +75,7 @@ const updatePost = async (req,res) => {
     try{
 
         const postId = req.params.postId;
+        const user = req.user;
 
         if(!mongoose.Types.ObjectId.isValid(postId)){
             return res.status(400).json({
@@ -88,7 +90,12 @@ const updatePost = async (req,res) => {
             })
         }
 
-        const updatedPost = await postModel.findOne({ _id: postId } , { text }, { new: true });
+        const updatedPost = await postModel.findOne({$and: [{ _id: postId },{name: user.name}]} , { text }, { new: true });
+        if(!updatePost){
+            return res.status(403).json({
+                message: "User can not update profile"
+            })
+        }
 
         res.status(200).json({
             message: "Post updated",
@@ -107,10 +114,24 @@ const updatePost = async (req,res) => {
 const deletePost = async (req,res) => {
     try{
         const postId = req.params.postId;
+        const user = req.user;
 
         if(!mongoose.Types.ObjectId.isValid(postId)){
             return res.status(400).json({
                 message: "Group is not found"
+            })
+        }
+
+        const isPostExist = await postModel.findById(postId);
+        if(!isPostExist){
+            return res.status(400).json({
+                message: "Post not found"
+            })
+        }
+
+        if(isPostExist.name !== user.name){
+            return res.status(403).json({
+                message: "Can not delete post"
             })
         }
 

@@ -17,11 +17,16 @@ const groupSchema = new mongoose.Schema({
     trim: true,
     default: '',
   },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user"
+  },
   members: {
     type: [String],
     default: [],
   },
 }, { timestamps: true });
-const groupModel = mongoose.model('group', groupSchema);
 
+const groupModel = mongoose.model('group', groupSchema);
+ 
 module.exports = groupModel;

@@ -5,7 +5,8 @@ const groupModel = require("../models/groups.model");
 
 const createGroup = async (req, res) => {
   try {
-    const { name, subject, description } = req.body;
+    const {name, subject, description } = req.body;
+    const user = req.user;
 
     if (!name || !subject) {
       return res
@@ -16,7 +17,8 @@ const createGroup = async (req, res) => {
     const newGroup = new groupModel({
       name,
       subject,
-      description
+      description,
+      author: user._id
     });
 
     const savedGroup = await newGroup.save();
@@ -58,7 +60,7 @@ const getGroupById = async (req, res) => {
         return res.status(400).json({ success: false, message: 'Invalid group ID format' });
     }
 
-    const group = await groupModel.findById(groupId);
+    const group = await groupModel.findById(groupId).populate("author");
 
     if (!group) {
       return res.status(404).json({ success: false, message: `Group not found with id ${groupId}` });
@@ -79,11 +81,7 @@ const getGroupById = async (req, res) => {
 const joinGroup = async (req, res) => {
   try {
     const groupId = req.params.id;
-    const { memberName } = req.body;
-    
-    if (!memberName) {
-      return res.status(400).json({ success: false, message: 'Please provide a member name to add' });
-    }
+    const user = req.user;
     
     if (!mongoose.Types.ObjectId.isValid(groupId)) {
         return res.status(400).json({ success: false, message: 'Invalid group ID format' });
@@ -91,7 +89,7 @@ const joinGroup = async (req, res) => {
 
     const updatedGroup = await groupModel.findByIdAndUpdate(
       groupId,
-      { $push: { members: memberName.trim() } },
+      { $push: { members: user.name.trim() } },
       { new: true, runValidators: true }
     );
 
@@ -99,7 +97,6 @@ const joinGroup = async (req, res) => {
     if (!updatedGroup) {
       return res.status(404).json({ success: false, message: `Group not found with id ${groupId}` });
     }
-
 
     res.status(200).json({
       success: true,
