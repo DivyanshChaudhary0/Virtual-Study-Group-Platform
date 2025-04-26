@@ -15,7 +15,7 @@ const postSchema = new mongoose.Schema({
     default: 'Anonymous',
   },
   group: {
-    type: mongoose.Schema.ObjectId, 
+    type: mongoose.Schema.Types.ObjectId, 
     ref: 'group',
     required: [true, 'Post must belong to a group'],
   },

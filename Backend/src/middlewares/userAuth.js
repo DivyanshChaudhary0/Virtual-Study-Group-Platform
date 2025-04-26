@@ -14,21 +14,21 @@ async function userAuth(req,res,next) {
 
         const decoded = jwt.verify(token, config.JWT_SECRET);
         if(!decoded._id){
-            res.status(401).json({
+            return res.status(401).json({
                 message: "Not authorized, token payload invalid"
             });
-        }
+        }        
 
         const user = await userModel.findById(decoded._id);
 
-        if (user) {
-            res.status(401).json({
+        if (!user) {
+            return res.status(401).json({
                 message: "Not authorized, user not found"
             });
        }
 
         req.user = user;
-        next();
+        return next();
 
     }
     catch(error){

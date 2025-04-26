@@ -16,7 +16,7 @@ function LoginPage() {
         setError('');
         setLoading(true);
         const result = await login(email, password);
-        if (result) {
+        if (result.success) {
             navigate('/');
         } else {
             setError(result.message || 'Failed to log in');

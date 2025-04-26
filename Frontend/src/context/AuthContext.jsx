@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`;
         try {
             const response = await axios.get(BASE_URL + "/api/auth/me");
-            const storedUser = localStorage.getItem('authUser');
+            const storedUser = response.data.user;
              if (storedUser) {
                  setUser(JSON.parse(storedUser));
              } else {
@@ -91,7 +91,7 @@ export const AuthProvider = ({ children }) => {
             const response = await axios.post(BASE_URL + '/api/auth/register', { name, email, password });
              if (response.data) {
                 storeToken(response.data.token);
-                setUser(response.data.user); // Store user data
+                setUser(response.data.user);
                 localStorage.setItem('authUser', JSON.stringify(response.data.user));
                 return { success: true };
             } else {
@@ -119,6 +119,9 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
     };
+
+    console.log(user);
+    
 
     return <AuthContext.Provider value={value}> {children} </AuthContext.Provider>;
 };

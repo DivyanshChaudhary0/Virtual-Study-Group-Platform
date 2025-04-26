@@ -100,7 +100,7 @@ const joinGroup = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: `${memberName} added to group ${updatedGroup.name}`,
+      message: `${user.name} added to group ${updatedGroup.name}`,
       data: updatedGroup,
     });
   } catch (err) {

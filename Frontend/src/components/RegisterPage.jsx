@@ -21,7 +21,7 @@ function RegisterPage() {
         }
         setLoading(true);
         const result = await register(name, email, password);
-        if (result) {
+        if (result.success) {
             navigate('/');
         } else {
             setError(result.message || 'Failed to register');

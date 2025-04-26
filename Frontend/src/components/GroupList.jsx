@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { BASE_URL } from '../utils/constants';
 
-function GroupList({key}) {
+function GroupList({ key }) {
   
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -48,7 +48,7 @@ const login = async function(req,res){
             })
         }
 
-        const user = await userModel.findOne({email}).$whereselect('+password');;
+        const user = await userModel.findOne({email}).select('+password');
         if(!user){
             return res.status(404).json({
                 message: "Invalid email or password"
