@@ -1,8 +1,8 @@
 
-const { createContext, useContext } = require("react");
+import { createContext, useCallback, useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { BASE_URL } from "../utils/constants";
-import { useNavigate } from "react-router-dom"
+
 
 const AuthContext = createContext(null);
 
@@ -12,8 +12,7 @@ export const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('authToken') || null);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true); 
 
 
     const storeToken = useCallback((newToken) => {
@@ -38,11 +37,7 @@ export const AuthProvider = ({ children }) => {
         }
         axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`;
         try {
-            // Optional: Create a '/api/auth/me' endpoint to validate token and get user
-            // If not, decode token client-side (less secure but simpler for hackathon)
-            // For simplicity here, we assume the user object is stored/retrieved on login/register
-            // Let's simulate fetching based on token presence for now
-            // You would typically decode the token or call backend here
+            const response = await axios.get(BASE_URL + "/api/auth/me");
             const storedUser = localStorage.getItem('authUser');
              if (storedUser) {
                  setUser(JSON.parse(storedUser));
@@ -62,7 +57,6 @@ export const AuthProvider = ({ children }) => {
     }, [storeToken]);
 
 
-    // Check for token on initial load
     useEffect(() => {
         const initialToken = localStorage.getItem('authToken');
         if (initialToken) {
@@ -115,7 +109,6 @@ export const AuthProvider = ({ children }) => {
         storeToken(null);
         setUser(null);
         localStorage.removeItem('authUser');
-        navigate("/");
     };
 
     const value = {
