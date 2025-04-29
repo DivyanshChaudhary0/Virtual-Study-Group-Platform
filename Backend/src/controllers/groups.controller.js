@@ -5,7 +5,7 @@ const groupModel = require("../models/groups.model");
 
 const createGroup = async (req, res) => {
   try {
-    const {name, subject, description } = req.body;
+    const { name, subject, description } = req.body;
     const user = req.user;
 
     if (!name || !subject) {
