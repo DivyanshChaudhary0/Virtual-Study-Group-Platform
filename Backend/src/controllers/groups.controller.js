@@ -94,7 +94,7 @@ const joinGroup = async (req, res) => {
       })
     }
 
-    const userAlreadyExist = isGroupExist.members.find( (name) => name === user.name);
+    const userAlreadyExist = isGroupExist.members.find(( name ) => name === user.name);
 
     if(userAlreadyExist){
       return res.status(400).json({
